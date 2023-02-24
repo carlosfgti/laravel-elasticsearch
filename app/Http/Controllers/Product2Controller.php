@@ -6,6 +6,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+use function PHPSTORM_META\map;
+
 class Product2Controller extends Controller
 {
     private string $url;
@@ -31,11 +33,11 @@ class Product2Controller extends Controller
         try {
             $response = Http::get($this->url, $this->elasticParams);
             $data = json_decode($response->body());
+            $products = collect($data->hits->hits)->map(function ($hit) {
+                return $hit->_source->after;
+            });
 
-            foreach($data->hits->hits as $hit) {
-                $product = $hit->_source->after;
-                dd($product);
-            }
+            return $products;
         } catch (Exception $e) {
             throw $e;
         }
