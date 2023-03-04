@@ -14,12 +14,7 @@ class ProductController extends Controller
         protected Client $client,
         protected $elasticParams = [],
     ) {
-        $this->elasticParams = [
-            'index' => config('elasticsearch.index_prefix') . 'products',
-            'body' => [
-                'query' => []
-            ],
-        ];
+        $this->elasticParams = [];
     }
 
     public function index(Request $request)
@@ -29,13 +24,13 @@ class ProductController extends Controller
             $this->elasticParams['body'] = [
                 'query' => [
                     'match' => [
-                        'name' => $name
+                        'after.message' => $name
                     ]
                 ]
             ];
         }
         try {
-            $response = $this->client->index($this->elasticParams);
+            $response = $this->client->search($this->elasticParams);
         } catch (ClientResponseException $e) {
             throw $e;
         } catch (ServerResponseException $e) {
