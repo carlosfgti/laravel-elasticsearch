@@ -15,7 +15,7 @@ class Product2Controller extends Controller
 
     public function __construct()
     {
-        $this->url = config('elasticsearch.hosts')[0] . '/' . config('elasticsearch.index_prefix') . 'products/_search';
+        $this->url = config('elasticsearch.hosts')[0] . '/' . config('elasticsearch.index_prefix') . 'logs/_search';
     }
 
     public function index(Request $request)
@@ -31,10 +31,14 @@ class Product2Controller extends Controller
             ];
         }
         try {
-            $response = Http::get($this->url, $this->elasticParams);
+            $response = Http::withBasicAuth('elastic', 'password')->get($this->url, $this->elasticParams);
             $data = json_decode($response->body());
             $products = collect($data->hits->hits)->map(function ($hit) {
-                return $hit->_source->after;
+                // dd($hit->_source->after);
+                if(isset($hit->_source->after))
+                    return $hit->_source->after;
+
+                return;
             });
 
             return $products;
