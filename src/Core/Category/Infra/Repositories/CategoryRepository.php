@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Category\Infra;
+namespace Core\Category\Infra\Repositories;
 
 use Core\Category\Domain\Entities\Category;
 use Core\Category\Domain\Repository\CategoryRepositoryInterface;
