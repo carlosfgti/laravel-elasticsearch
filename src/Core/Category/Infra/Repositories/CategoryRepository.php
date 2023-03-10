@@ -2,6 +2,7 @@
 
 namespace Core\Category\Infra\Repositories;
 
+use App\Repositories\Presenters\PaginationPresenter;
 use Core\Category\Domain\Entities\Category;
 use Core\Category\Domain\Repository\CategoryRepositoryInterface;
 use Core\SeedWork\Domain\Repository\PaginationInterface;
@@ -48,6 +49,6 @@ class CategoryRepository implements CategoryRepositoryInterface
             throw $e;
         }
 
-        $response = $response->asArray();
+        return new PaginationPresenter($response->asArray());
     }
 }
