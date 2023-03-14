@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Adapters\ApiAdapter;
 use Core\Category\Application\DTO\ListCategoriesInputDto;
 use Core\Category\Application\UseCases\ListCategoriesUseCase;
 use Illuminate\Http\Request;
@@ -22,5 +23,8 @@ class CategoryController extends Controller
                 totalPage: (int) $request->get('totalPerPage', 15),
             )
         );
+
+        return (new ApiAdapter($response))
+                    ->toJson();
     }
 }
