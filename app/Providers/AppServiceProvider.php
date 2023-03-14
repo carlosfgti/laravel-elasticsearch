@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Core\Category\Domain\Repository\CategoryRepositoryInterface;
+use Core\Category\Infra\Repositories\CategoryRepository;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
                                     ->setHosts(config('elasticsearch.hosts'))
                                     ->build();
         });
+
+        $this->app->singleton(CategoryRepositoryInterface::class, CategoryRepository::class);
     }
 
     /**
