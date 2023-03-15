@@ -25,7 +25,26 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
+        if ($filter) {
+            $this->elasticParams['body'] = [
+                'query' => [
+                    'match' => [
+                        'after.message' => $filter
+                    ]
+                ]
+            ];
+        }
+        try {
+            $response = $this->client->search($this->elasticParams);
+        } catch (ClientResponseException $e) {
+            throw $e;
+        } catch (ServerResponseException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            throw $e;
+        }
 
+        return $response->asArray();
     }
 
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
