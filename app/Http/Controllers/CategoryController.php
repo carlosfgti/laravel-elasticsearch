@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Adapters\ApiAdapter;
+use App\Http\Resources\CategoryResource;
 use Core\Category\Application\DTO\ListCategoriesInputDto;
 use Core\Category\Application\UseCases\ListCategoriesUseCase;
 use Illuminate\Http\Request;
@@ -15,16 +16,15 @@ class CategoryController extends Controller
 
     public function index(Request $request, ListCategoriesUseCase $useCase)
     {
-        $response = $useCase->execute(
+        $categories = $useCase->execute(
             input: new ListCategoriesInputDto(
                 filter: $request->filter ?? '',
-                order: $request->get('order', 'DESC'),
-                page: (int) $request->get('page', 1),
-                totalPage: (int) $request->get('totalPerPage', 15),
             )
         );
 
-        return (new ApiAdapter($response))
-                    ->toJson();
+        return CategoryResource::collection(collect($categories));
+
+        // return (new ApiAdapter($response))
+        //             ->toJson();
     }
 }
