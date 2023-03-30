@@ -84,6 +84,7 @@ return [
             // The types only available in this schema
             'types' => [
                 'User' => \App\GraphQL\Types\UserType::class,
+                'Category' => \App\GraphQL\Types\CategoryType::class,
             ],
 
             // Laravel HTTP middleware
