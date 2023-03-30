@@ -77,6 +77,7 @@ return [
             'query' => [
                 'user' => \App\GraphQL\Queries\Users\UserQuery::class,
                 'users' => \App\GraphQL\Queries\Users\UsersQuery::class,
+                'category' => \App\GraphQL\Queries\Category\CategoryQuery::class,
             ],
             'mutation' => [
                 // ExampleMutation::class,
